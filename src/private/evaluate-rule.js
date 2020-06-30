@@ -1,17 +1,10 @@
-import makeArgs from './make-args';
-import isComposedRule from './is-composed-rule';
-import parseComposed from './parse-composed';
-import FN from '../fn';
+import isRule from './is-rule'
 
-export default (rule, data, custom = {}) => {
-  let result;
-  if (isComposedRule(rule)) {
-    // This is a composed rule so call parse composed
-    result = parseComposed(rule, data, custom); // eslint-disable-line no-use-before-define
-  } else {
-    // This is a base rule, execute it
-    const { left, right } = makeArgs(data, rule.left, rule.right);
-    result = FN(rule.fn, custom)(left, right, data);
+export default (rule, data) => {
+  if (isRule(rule)) {
+    return typeof rule === 'function' ? rule(data) : rule
   }
-  return result;
-};
+
+  // If this isn't a rule, throw
+  throw new Error(`Regent: "${rule}" is not a valid rule`)
+}

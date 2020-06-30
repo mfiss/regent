@@ -1,30 +1,34 @@
-import isRule from './is-rule';
+import isRule from './is-rule'
+import equals from '../functions/equals'
 
-describe('isRule', () => {
+describe('3.x.x - isRule', () => {
   it('isRule should be a function', () => {
-    const actual = typeof isRule;
-    const expected = 'function';
-    expect(actual).toEqual(expected);
-  });
+    const actual = typeof isRule
+    const expected = 'function'
+    expect(actual).toEqual(expected)
+  })
 
-  it('isRule should return true when called with a well-formed rule', () => {
-    const data = { left: '@foo', fn: 'bar', right: ['baz'] };
-    expect(isRule(data)).toEqual(true);
-  });
+  it('should work with functional rules', () => {
+    const RULE = equals('@foo', 'bar')
+    const actual = isRule(RULE)
+    const expected = true
 
-  it('isRule should return false when called with a poorly-formed rule', () => {
-    const data = { foo: 'bar' };
-    expect(isRule(data)).toEqual(false);
-  });
+    expect(actual).toEqual(expected)
+  })
 
-  it('isRule should return true for rules that have only a left and fn property.', () => {
-    const data = { left: '@foo', fn: 'bar' };
-    expect(isRule(data)).toEqual(true);
-  });
+  it('should work with boolean literals (true)', () => {
+    const RULE = true
+    const actual = isRule(RULE)
+    const expected = true
 
-  it('isRule should return true for rules that have only a right and fn property.', () => {
-    const data = { fn: 'bar', right: '@foo' };
-    expect(isRule(data)).toEqual(true);
-  });
-});
+    expect(actual).toEqual(expected)
+  })
 
+  it('should work with boolean literals (false)', () => {
+    const RULE = false
+    const actual = isRule(RULE)
+    const expected = true
+
+    expect(actual).toEqual(expected)
+  })
+})
